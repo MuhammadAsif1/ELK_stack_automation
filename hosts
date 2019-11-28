@@ -1,0 +1,3 @@
+
+[node]
+node1 ansible_ssh_host=192.168.10.140 ansible_ssh_pass=xflow123 ansible_ssh_user=root
