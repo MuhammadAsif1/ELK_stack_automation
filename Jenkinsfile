@@ -22,5 +22,10 @@ fi'''
 ansible-playbook -i /var/lib/jenkins/workspace/ELK_stack_automation_master/hosts /var/lib/jenkins/workspace/ELK_stack_automation_master/playbook.yml'''
       }
     }
+    stage('Test') {
+      steps {
+        sh 'echo "-------- Testing ----------"'
+      }
+    }
   }
 }
