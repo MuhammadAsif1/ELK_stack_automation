@@ -16,5 +16,11 @@ else
 fi'''
       }
     }
+    stage('Deploy') {
+      steps {
+        sh '''echo "--------- Executing Ansible Playbook -------------"
+ansible-playbook -i /var/lib/jenkins/workspace/ELK_stack_automation_master/hosts /var/lib/jenkins/workspace/ELK_stack_automation_master/playbook.yml'''
+      }
+    }
   }
 }
