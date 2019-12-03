@@ -1,7 +1,7 @@
 ---
 
 - name: ELK stack
-  hosts: localhost
+  hosts: LJH
   gather_facts: false
   tasks:
     - name: installed packages
