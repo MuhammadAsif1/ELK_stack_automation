@@ -1,0 +1,46 @@
+---
+- name: Kubernetees Cluster Setup
+  hosts: localhost 
+  vars:
+    ports: [6443/tcp, 2379/tcp, 2380/tcp, 10250/tcp, 10251/tcp, 10252/tcp, 10255/tcp]
+  tasks:
+  - name: Installing K8 Master
+    shell: |
+      setenforce 0
+      sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
+    register: output
+  - debug: var=output
+
+  - name: Opening Ports in Firewall
+    firewalld:
+      port: "{{ item }}"
+      permanent: yes
+      state: enabled 
+    with_items: "{{ports}}"
+
+  - name: Reloading Firewall service
+    service:
+      name: firewalld
+      state: reloaded
+
+  - name: Adding Kernal Module
+    modprobe:
+      name: br_netfilter
+      state: present
+  
+  - name: Editing iptables
+    lineinfile:
+      path: /proc/sys/net/bridge/bridge-nf-call-iptables
+      state: present
+      line: '1'
+ 
+  - name: Adding Worker Nodes in /etc/hosts file
+    blockinfile:
+      path: /etc/hosts
+      block: |
+        100.67.60.59 k8s-master
+        100.67.57.59 LJH_worker_node1
+        100.67.60.8  sah_worker_node2
+    
+        
+         
