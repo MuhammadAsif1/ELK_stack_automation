@@ -8,4 +8,9 @@
       command: rpm -qa
       register: string
     - debug: var=string
+    
+    - name: Installing K8 Master
+      shell: |
+        setenforce 0
+        sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
       
