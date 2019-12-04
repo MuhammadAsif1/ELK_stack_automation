@@ -76,6 +76,11 @@
       state: present
       update_cache: yes  
 
-  - name: Restarting Docker 
-    docker_service:
-      state: restarted
+  - name: Restarting Docker and kublet
+    shell: |
+       systemctl enable docker
+       systemctl restart docker
+       systemctl enable kubelet
+       systemctl restart kubelet
+
+
