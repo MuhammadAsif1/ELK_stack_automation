@@ -78,6 +78,4 @@
 
   - name: Restarting Docker 
     docker_service:
-      state: present
-      enabled: yes
       state: restarted
