@@ -76,10 +76,8 @@
       state: present
       update_cache: yes  
 
-  - name: Restarting Kubeadm and Docker service
-    service:
-      name:
-        - kubeletd
-        - dockerd
+  - name: Restarting Docker 
+    docker_service:
+      state: present
       enabled: yes
       state: restarted
