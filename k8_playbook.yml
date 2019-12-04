@@ -1,6 +1,6 @@
 ---
 - name: Kubernetees Cluster Setup
-  hosts: localhost
+  hosts: local-hosts
   sudo: yes 
   vars:
     ports: [6443/tcp, 2379/tcp, 2380/tcp, 10250/tcp, 10251/tcp, 10252/tcp, 10255/tcp]
@@ -42,6 +42,42 @@
         100.67.60.59 k8s-master
         100.67.57.59 LJH_worker_node1
         100.67.60.8  sah_worker_node2
+
+  - name: Creating kubernetees repostiory file
+    file:
+      path: /etc/yum.repos.d/kubernetes.repo
+      state: touch
+      mode: u=rwx,g=r,o=r
     
-        
-         
+  - name: Adding kubernetees repository
+    blockinfile:
+      path: /etc/yum.repos.d/kubernetes.repo
+      block: |
+        [kubernetes]
+        name=Kubernetes
+        baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+        enabled=1
+        gpgcheck=1
+        repo_gpgcheck=1
+        gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg
+                https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg 
+
+  - name: Installing Kubeadm
+    yum:
+      name:
+        - kubeadm
+      state: present
+
+  - name: Installing Docker
+    yum:
+      name:
+        - docker
+      state: present  
+
+  - name: Restarting Kubeadm and Docker service
+    systemd:
+      name:
+        - kubelet
+        - docker
+      enabled: yes
+      state: restarted
