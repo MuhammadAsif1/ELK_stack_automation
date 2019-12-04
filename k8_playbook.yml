@@ -67,12 +67,14 @@
       name:
         - kubeadm
       state: present
+      update_cache: yes
 
   - name: Installing Docker
     yum:
       name:
         - docker
-      state: present  
+      state: present
+      update_cache: yes  
 
   - name: Restarting Kubeadm and Docker service
     systemd:
