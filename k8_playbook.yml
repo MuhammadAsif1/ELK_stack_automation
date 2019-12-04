@@ -77,7 +77,7 @@
       update_cache: yes  
 
   - name: Restarting Kubeadm and Docker service
-    systemd:
+    service:
       name:
         - kubelet
         - docker
