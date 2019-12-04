@@ -79,7 +79,7 @@
   - name: Restarting Kubeadm and Docker service
     service:
       name:
-        - kubelet
-        - docker
+        - kubeletd
+        - dockerd
       enabled: yes
       state: restarted
