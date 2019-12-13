@@ -82,5 +82,15 @@
        systemctl restart docker
        systemctl enable kubelet
        systemctl restart kubelet
+  
+  - name: Initialization of kubernetees Master 
+    shell: |
+       - mkdir -p $HOME/.kube
+       - cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+       - chown $(id -u):$(id -g) $HOME/.kube/config
+       - kubeadm init
+       - kubectl get nodes
+    register: output
+  - debug: var=output
 
 
