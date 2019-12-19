@@ -1,22 +1,16 @@
 ---
 - name: Kubernetees Cluster Setup
-  hosts: local-hosts
-  sudo: yes 
+  hosts: Logstash-Nodes
+  sudo: yes
   vars:
-    ports: [6443/tcp, 2379/tcp, 2380/tcp, 10250/tcp, 10251/tcp, 10252/tcp, 10255/tcp]
+    ports: [6783/tcp, 30000-32767/tcp, 10250/tcp, 10255/tcp]
+ 
   tasks:
-  - name: Installing K8 Master
-    shell: |
-      setenforce 0
-      sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
-    register: output
-  - debug: var=output
-
   - name: Opening Ports in Firewall
     firewalld:
       port: "{{ item }}"
       permanent: yes
-      state: enabled 
+      state: enabled
     with_items: "{{ports}}"
 
   - name: Reloading Firewall service
@@ -24,32 +18,33 @@
       name: firewalld
       state: reloaded
 
-  - name: Adding Kernal Module
-    modprobe:
-      name: br_netfilter
-      state: present
-  
-  - name: Editing iptables
-    lineinfile:
-      path: /proc/sys/net/bridge/bridge-nf-call-iptables
-      state: present
-      line: '1'
- 
-  - name: Adding Worker Nodes in /etc/hosts file
-    blockinfile:
-      path: /etc/hosts
-      block: |
-        100.67.60.59 k8s-master
-        100.67.57.59 LJH_worker_node1
-        100.67.60.8  sah_worker_node2
+  - name: Disable SELinux
+    selinux:
+      state: disabled 
 
-  - name: Creating kubernetees repostiory file
-    file:
-      path: /etc/yum.repos.d/kubernetes.repo
-      state: touch
-      mode: u=rwx,g=r,o=r
-    
-  - name: Adding kubernetees repository
+#  - name: creating directory
+#    file:
+#      path: /proc/sys/net/bridge
+#      state: directory
+
+#  - name: creating file
+#    copy: 
+#         content: "1" 
+#         dest: "/proc/sys/net/bridge/bridge-nf-call-iptables"
+#         backup: yes
+#         owner: root
+#         group: root
+#         mode: 0755
+
+  - name: creating kubernetes.repo file 
+    file: 
+       path: /etc/yum.repos.d/kubernetes.repo
+       state: touch
+       owner: root
+       group: root
+       mode: 0744
+
+  - name: configuring Kubernetes Repostries on worker nodes
     blockinfile:
       path: /etc/yum.repos.d/kubernetes.repo
       block: |
@@ -60,7 +55,7 @@
         gpgcheck=1
         repo_gpgcheck=1
         gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg
-                https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg 
+                https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
 
   - name: Installing Kubeadm
     yum:
@@ -72,12 +67,20 @@
   - name: adding repos for docker
     command: sudo subscription-manager repos --enable=rhel-7-server-rpms --enable=rhel-7-server-extras-rpms --enable=rhel-7-server-optional-rpms
 
+  - name: Installing docker dependencies
+    yum:
+      name:
+        - device-mapper-libs
+        - device-mapper-event-libs 
+      state: present
+      update_cache: yes
+
   - name: Installing Docker
     yum:
       name:
         - docker
       state: present
-      update_cache: yes  
+      update_cache: yes
 
   - name: Restarting Docker and kublet
     shell: |

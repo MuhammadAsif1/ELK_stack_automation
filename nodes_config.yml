@@ -1,0 +1,19 @@
+# contains worker nodes of kubernetes 
+# on these sah nodes Logstash containers will be bedeployed.
+# while on R57 Linux Jump Host containerized services of Elasticsearch and Kibana will be deployed, and it will also be configured as a worker node
+
+
+R60sahWorkerNode:
+  IP: 100.67.60.8
+  user: root
+  password: Dell0SS!
+
+R57sahWorkerNode: 
+  IP: 100.67.57.8
+  user: root
+  password: Dell0SS!
+
+R57ljhWorkerNode:
+  IP: 100.67.57.60
+  user: root
+  password: Dell0SS!
