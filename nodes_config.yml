@@ -2,9 +2,13 @@
 # on these sah nodes Logstash containers will be bedeployed.
 # while on R57 Linux Jump Host containerized services of Elasticsearch and Kibana will be deployed, and it will also be configured as a worker node
 
+k8smaster:
+  IP: 100.67.60.59
+  user: root
+  password: Dell0SS!
 
-R60sahWorkerNode:
-  IP: 100.67.60.8
+workernode2:
+  IP: 100.67.62.6
   user: root
   password: Dell0SS!
 

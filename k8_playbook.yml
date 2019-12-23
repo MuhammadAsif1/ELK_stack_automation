@@ -40,8 +40,7 @@
       path: /etc/hosts
       block: |
         100.67.60.59 k8s-master
-        100.67.57.59 LJH_worker_node1
-        100.67.60.8  sah_worker_node2
+        100.67.62.6  worker_node2
 
   - name: Creating kubernetees repostiory file
     file:
@@ -71,6 +70,14 @@
 
   - name: adding repos for docker
     command: sudo subscription-manager repos --enable=rhel-7-server-rpms --enable=rhel-7-server-extras-rpms --enable=rhel-7-server-optional-rpms
+
+  - name: Installing docker dependencies
+    yum:
+      name:
+        - device-mapper-libs
+        - device-mapper-event-libs
+      state: present
+      update_cache: yes
 
   - name: Installing Docker
     yum:

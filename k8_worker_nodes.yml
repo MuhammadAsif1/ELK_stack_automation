@@ -4,6 +4,7 @@
   sudo: yes
   vars:
     ports: [6783/tcp, 30000-32767/tcp, 10250/tcp, 10255/tcp]
+    
  
   tasks:
   - name: Opening Ports in Firewall
@@ -22,19 +23,8 @@
     selinux:
       state: disabled 
 
-#  - name: creating directory
-#    file:
-#      path: /proc/sys/net/bridge
-#      state: directory
-
-#  - name: creating file
-#    copy: 
-#         content: "1" 
-#         dest: "/proc/sys/net/bridge/bridge-nf-call-iptables"
-#         backup: yes
-#         owner: root
-#         group: root
-#         mode: 0755
+  - name: Adding rule in iptables
+    command: echo “net.bridge.bridge-nf-call-iptables = 1” >> /etc/sysctl.conf
 
   - name: creating kubernetes.repo file 
     file: 
@@ -62,7 +52,7 @@
       name:
         - kubeadm
       state: present
-      update_cache: yes
+      #update_cache: yes
 
   - name: adding repos for docker
     command: sudo subscription-manager repos --enable=rhel-7-server-rpms --enable=rhel-7-server-extras-rpms --enable=rhel-7-server-optional-rpms
@@ -89,4 +79,3 @@
         systemctl enable kubelet
         systemctl restart kubelet
         swapoff -a
-

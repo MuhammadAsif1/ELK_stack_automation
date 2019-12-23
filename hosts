@@ -2,7 +2,7 @@
 R60LJH ansible_ssh_host=100.67.60.59 ansible_ssh_pass=Dell0SS! ansible_ssh_user=root
 
 [Logstash-Nodes]
-R60sah_worker_node2 ansible_ssh_host=100.67.60.8 ansible_ssh_pass=Dell0SS! ansible_ssh_user=root
+R62ljh_worker_node2 ansible_ssh_host=100.67.62.6 ansible_ssh_pass=Dell0SS! ansible_ssh_user=root
 #R57sah_worker_node2 ansible_ssh_host=100.67.57.8 ansible_ssh_pass=Dell0SS! ansible_ssh_user=root
 
 [EK-Node]
