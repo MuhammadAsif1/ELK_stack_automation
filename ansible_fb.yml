@@ -6,25 +6,25 @@
     sudo: yes
 
     tasks:
-    # - name: Adding rpm key
-    #   rpm_key:
-    #     state: present
-    #     key: https://artifacts.elastic.co/GPG-KEY-elasticsearch
-    #
-    # - name: Adding Elastic 7.X repo in yum local repo
-    #   yum_repository:
-    #     name: Elastic_7.X_repo
-    #     baseurl: https://artifacts.elastic.co/packages/7.x/yum
-    #     gpgcheck: true
-    #     gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
-    #     description: Elastic 7.X Repo
-    #
-    #
-    # - name: Install Filebeat
-    #   yum:
-    #     name: filebeat
-    #     state: latest
-    #     update_cache: yes
+    - name: Adding rpm key
+      rpm_key:
+        state: present
+        key: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+
+    - name: Adding Elastic 7.X repo in yum local repo
+      yum_repository:
+        name: Elastic_7.X_repo
+        baseurl: https://artifacts.elastic.co/packages/7.x/yum
+        gpgcheck: true
+        gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+        description: Elastic 7.X Repo
+
+
+    - name: Install Filebeat
+      yum:
+        name: filebeat
+        state: latest
+        update_cache: yes
 
     # - name: Enabling input logs in Configuration file
     #   lineinfile:
@@ -53,9 +53,7 @@
     #     regexp: '^( +hosts: ["localhost:9200"]$)'
     #     line: '#\1'
     #     backrefs: yes
-    #
-    #
-    #
+
     # - name: Uncomment output.Logstash
     #   lineinfile:
     #     path: /etc/filebeat/filebeat.yml
@@ -69,11 +67,6 @@
     #     regexp: '^(.*)hosts: ["localhost:5044](.*)$'
     #     line: '  hosts: ["localhost:5044]'
     #     backrefs: yes
-
-    # - name: Filebeat Configuration
-    #   template:
-    #     src: filebeat.config.j2
-    #     dest: /etc/filebeat/filebeat.yml
 
     - name: Removing filebeat.yml file from remote hosts
       file:
