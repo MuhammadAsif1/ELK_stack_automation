@@ -1,3 +1,6 @@
 
 [LJH]
 LJH1 ansible_ssh_host=100.67.60.59 ansible_ssh_pass=Dell0SS! ansible_ssh_user=root
+
+[SAH]
+sah_worker_node ansible_ssh_host=100.67.62.8 ansible_ssh_pass=Dell0SS! ansible_ssh_user=root

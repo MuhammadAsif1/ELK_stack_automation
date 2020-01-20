@@ -1,0 +1,103 @@
+---
+  - name: Installation of Filebeat on SAH nodes
+    hosts: SAH
+    gather_facts: False
+    remote_user: root
+    sudo: yes
+
+    tasks:
+    # - name: Adding rpm key
+    #   rpm_key:
+    #     state: present
+    #     key: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    #
+    # - name: Adding Elastic 7.X repo in yum local repo
+    #   yum_repository:
+    #     name: Elastic_7.X_repo
+    #     baseurl: https://artifacts.elastic.co/packages/7.x/yum
+    #     gpgcheck: true
+    #     gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    #     description: Elastic 7.X Repo
+    #
+    #
+    # - name: Install Filebeat
+    #   yum:
+    #     name: filebeat
+    #     state: latest
+    #     update_cache: yes
+
+    # - name: Enabling input logs in Configuration file
+    #   lineinfile:
+    #     path: /etc/filebeat/filebeat.yml
+    #     regexp: '^\s*enabled: false.*$'
+    #     line: '  enabled: true'
+    #     backrefs: yes
+    #
+    # - name: Replacing logs path
+    #   lineinfile:
+    #     path: /etc/filebeat/filebeat.yml
+    #     regexp: '^(.*)/var/log(.*)$'
+    #     line: '    - /auto_results/deployer.log.*'
+    #     backrefs: yes
+    #
+    # - name: Commenting Output.elasticsearch
+    #   lineinfile:
+    #     path: /etc/filebeat/filebeat.yml
+    #     regexp: '(output.elasticsearch:)'
+    #     line: '#\1'
+    #     backrefs: yes
+    #
+    # - name: Commenting host info of elasticsearch
+    #   lineinfile:
+    #     path: /etc/filebeat/filebeat.yml
+    #     regexp: '^( +hosts: ["localhost:9200"]$)'
+    #     line: '#\1'
+    #     backrefs: yes
+    #
+    #
+    #
+    # - name: Uncomment output.Logstash
+    #   lineinfile:
+    #     path: /etc/filebeat/filebeat.yml
+    #     regexp: '^#(output.logstash)'
+    #     line: '\1'
+    #     backrefs: yes
+    #
+    # - name: Uncomment host value of logstash
+    #   lineinfile:
+    #     path: /etc/filebeat/filebeat.yml
+    #     regexp: '^(.*)hosts: ["localhost:5044](.*)$'
+    #     line: '  hosts: ["localhost:5044]'
+    #     backrefs: yes
+
+    # - name: Filebeat Configuration
+    #   template:
+    #     src: filebeat.config.j2
+    #     dest: /etc/filebeat/filebeat.yml
+
+    - name: Removing filebeat.yml file from remote hosts
+      file:
+        path: /etc/filebeat/filebeat.yaml
+        state: absent
+
+
+    - name: Copy "filebeat.yml" file with custom configuration to remote hosts
+      copy:
+        src: /root/usama/filebeat.yml
+        dest: /etc/filebeat/filebeat.yml
+
+
+    - name: Force systemd to reread configurations
+      systemd:
+        daemon_reload: yes
+
+    - name: Enable filebeat.service
+      systemd:
+        name: filebeat.service
+        enabled: yes
+
+    - name: Start filebeat.service
+      systemd:
+        name: filebeat.service
+        state: restarted
+
