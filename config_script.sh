@@ -58,6 +58,7 @@ data=$(echo $?)
 if [ "$data" -lt 1  ];
 then
   echo "Error Occured!"
+  echo "Resolving issues ..........................................."
   echo "----------------------- Reset Kubeadm ----------------------"
   echo y | kubeadm reset
   echo "----------------------- Initializing Kubeadm ---------------"
@@ -77,6 +78,9 @@ then
   echo "-----------------------------------------------------------"
   export kubever=$(kubectl version | base64 | tr -d '\n')
   kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$kubever"
+  k8_nodes_config
+  scaning_and_joining_cluster
+  rm -f file
   echo "-----------------------------------------------------------"
   echo "----------------------- Kubectl Pods ----------------------"
   echo "-----------------------------------------------------------"
@@ -84,9 +88,6 @@ then
   echo "$output"
   echo "-----------------------------------------------------------"
   echo "-----------------------------------------------------------"
-  k8_nodes_config
-  scaning_and_joining_cluster
-  rm -f file
 else
   echo "Successfully running"
   echo "-----------------------------------------------------------"

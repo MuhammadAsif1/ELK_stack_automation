@@ -3,12 +3,17 @@
 # while on R57 Linux Jump Host containerized services of Elasticsearch and Kibana will be deployed, and it will also be configured as a worker node
 
 k8smaster:
+  IP: 100.67.62.6
+  user: root
+  password: Dell0SS!
+
+workernode1:
   IP: 100.67.60.59
   user: root
   password: Dell0SS!
 
 workernode2:
-  IP: 100.67.62.6
+  IP: 100.67.57.59
   user: root
   password: Dell0SS!
 
@@ -17,7 +22,3 @@ R57sahWorkerNode:
   user: root
   password: Dell0SS!
 
-R57ljhWorkerNode:
-  IP: 100.67.57.60
-  user: root
-  password: Dell0SS!

@@ -39,8 +39,8 @@
     blockinfile:
       path: /etc/hosts
       block: |
-        100.67.60.59 k8s-master
-        100.67.62.6  worker_node2
+        100.67.62.6 k8s-master
+        100.67.57.59  worker_node2
 
   - name: Creating kubernetees repostiory file
     file:

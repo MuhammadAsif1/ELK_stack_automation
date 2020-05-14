@@ -1,6 +1,6 @@
 ---
 - name: Kubernetees Cluster Setup
-  hosts: Logstash-Nodes
+  hosts: Worker-Nodes
   sudo: yes
   vars:
     ports: [6783/tcp, 30000-32767/tcp, 10250/tcp, 10255/tcp]
@@ -52,7 +52,7 @@
       name:
         - kubeadm
       state: present
-      #update_cache: yes
+     # update_cache: yes
 
   - name: adding repos for docker
     command: sudo subscription-manager repos --enable=rhel-7-server-rpms --enable=rhel-7-server-extras-rpms --enable=rhel-7-server-optional-rpms
