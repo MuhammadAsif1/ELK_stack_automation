@@ -1,5 +1,2 @@
 # ELK_stack_automation
-aklfsdk ckdfed
-fadkfnkedf 
-afkdnkf dkf
-afkdnfkdf
+Automation of each step which is required to setup ELK stack with customize docker images of ELK.
